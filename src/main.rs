@@ -1,6 +1,4 @@
-use quests_tracker::{
-    config::config_loader, infrastructure::postgres::postgress_connection::establish_connection,
-}
+use quests_tracker::{config::config_loader, infrastructure::postgres::postgres_connection};
 use tracing::{error, info};
 
 #[tokio::main]
@@ -19,7 +17,7 @@ async fn main() {
 
     info!("ENV has been loaded");
 
-    let postgres_pool = match establish_connection(&dotenvy_env.database.url) {
+    let postgres_pool = match postgres_connection::establish_connection(&dotenvy_env.database.url) {
         Ok(pool) => pool,
         Err(e) => {
             error!("Failed to establish connection to Postgres: {}", e);
